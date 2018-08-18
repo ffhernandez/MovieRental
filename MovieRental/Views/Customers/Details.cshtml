@@ -1,0 +1,28 @@
+﻿@model MovieRental.Models.Customer
+@{
+    ViewData["Title"] = "Customer Info";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h2>Customer Information</h2>
+
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Is Subscribe to Newsletter</th>
+            <th>Membership Type Id</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@Model.Name</td>
+            <td>@Model.IsSubscribeToNewsLetter</td>
+            <td>@Model.MembershipTypeId</td>
+        </tr>
+    </tbody>
+</table>
+
+
+

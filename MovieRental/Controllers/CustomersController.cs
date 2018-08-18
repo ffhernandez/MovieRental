@@ -4,21 +4,40 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MovieRental.Data;
+
 
 namespace MovieRental.Controllers
 {
     public class CustomersController : Controller
     {
-        // GET: Customers
-        public ActionResult Index()
+        private ApplicationDbContext _context;
+        public CustomersController(ApplicationDbContext context)
         {
-            return View();
+            _context = context;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            _context.Dispose();
+        }
+
+        // GET: Customers
+        public ViewResult Index()
+        {
+            var customers = _context.Customers;
+            return View(customers);
         }
 
         // GET: Customers/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            var customer = _context.Customers.SingleOrDefault(c => c.Id == id);
+            if(customer == null)
+            {
+                return NotFound();
+            }
+            return View(customer);
         }
 
         // GET: Customers/Create
