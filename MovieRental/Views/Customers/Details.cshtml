@@ -7,22 +7,15 @@
 
 <h2>Customer Information</h2>
 
-<table class="table table-bordered table-hover">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Is Subscribe to Newsletter</th>
-            <th>Membership Type Id</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>@Model.Name</td>
-            <td>@Model.IsSubscribeToNewsLetter</td>
-            <td>@Model.MembershipTypeId</td>
-        </tr>
-    </tbody>
-</table>
+
+<h3>@Model.Name</h3>
+<ul>
+    <li>Membership Type: @Model.MembershipType.Name</li>
+    @if(Model.BirthDate.HasValue)
+    {
+        <li>Birth Date: @Model.BirthDate.Value.ToShortDateString()</li>
+    }
+</ul>
 
 
 

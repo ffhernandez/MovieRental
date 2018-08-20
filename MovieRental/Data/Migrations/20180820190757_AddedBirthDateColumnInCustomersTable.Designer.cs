@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MovieRental.Data;
 
 namespace MovieRental.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180820190757_AddedBirthDateColumnInCustomersTable")]
+    partial class AddedBirthDateColumnInCustomersTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -207,17 +209,6 @@ namespace MovieRental.Data.Migrations
                     b.ToTable("Customers");
                 });
 
-            modelBuilder.Entity("MovieRental.Models.Genre", b =>
-                {
-                    b.Property<byte>("Id");
-
-                    b.Property<string>("Name");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Genres");
-                });
-
             modelBuilder.Entity("MovieRental.Models.MembershipType", b =>
                 {
                     b.Property<byte>("Id");
@@ -241,20 +232,10 @@ namespace MovieRental.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("DateAdded");
-
-                    b.Property<byte>("GenreId");
-
                     b.Property<string>("Name")
                         .IsRequired();
 
-                    b.Property<DateTime>("ReleaseDate");
-
-                    b.Property<int>("Stock");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("GenreId");
 
                     b.ToTable("Movies");
                 });
@@ -309,14 +290,6 @@ namespace MovieRental.Data.Migrations
                     b.HasOne("MovieRental.Models.MembershipType", "MembershipType")
                         .WithMany()
                         .HasForeignKey("MembershipTypeId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("MovieRental.Models.Movie", b =>
-                {
-                    b.HasOne("MovieRental.Models.Genre", "Genre")
-                        .WithMany()
-                        .HasForeignKey("GenreId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

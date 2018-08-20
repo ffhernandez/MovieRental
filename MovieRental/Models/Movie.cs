@@ -11,5 +11,10 @@ namespace MovieRental.Models
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
+        public int Stock { get; set; }
+        public DateTime DateAdded { get; set; }
+        public DateTime ReleaseDate { get; set; }
+        public byte GenreId { get; set; }
+        public Genre Genre { get; set; }
     }
 }
