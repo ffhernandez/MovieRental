@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MovieRental.Data;
+using MovieRental.Models;
+using MovieRental.Models.ViewModels;
 
 
 namespace MovieRental.Controllers
@@ -45,19 +47,36 @@ namespace MovieRental.Controllers
         // GET: Customers/Create
         public ActionResult Create()
         {
-            return View();
+            var membershipTypes = _context.MembershipTypes.ToList();
+            var viewModel = new CustomerFormViewModel()
+            {
+                MembershipTypes = membershipTypes
+            };
+            return View("CustomerForm", viewModel);
         }
 
         // POST: Customers/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(Customer customer)
         {
             try
             {
-                // TODO: Add insert logic here
+                if(customer.Id == 0)
+                    _context.Customers.Add(customer);
+                else
+                {
+                    var editedCustomer = _context.Customers.Single(c => c.Id == customer.Id);
+                    editedCustomer.Name = customer.Name;
+                    editedCustomer.BirthDate = customer.BirthDate;
+                    editedCustomer.MembershipTypeId = customer.MembershipTypeId;
+                    editedCustomer.IsSubscribeToNewsLetter = customer.IsSubscribeToNewsLetter;
 
-                return RedirectToAction(nameof(Index));
+                }
+                
+                _context.SaveChanges();
+
+                return RedirectToAction("Index", "Customers");
             }
             catch
             {
@@ -68,7 +87,15 @@ namespace MovieRental.Controllers
         // GET: Customers/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            var customer = _context.Customers.Single(c => c.Id == id);
+            if (customer == null)
+                return NotFound();
+            var viewModel = new CustomerFormViewModel {
+                Customer = customer,
+                MembershipTypes = _context.MembershipTypes.ToList()
+            };
+
+            return View("CustomerForm", viewModel);
         }
 
         // POST: Customers/Edit/5
@@ -91,7 +118,19 @@ namespace MovieRental.Controllers
         // GET: Customers/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            //Deleting using GET method for now
+            try
+            {
+                // TODO: Add delete logic here
+                _context.Customers.Remove(_context.Customers.Single(c => c.Id == id));
+                _context.SaveChanges();
+
+                return RedirectToAction("Index", "Customers");
+            }
+            catch
+            {
+                return View();
+            }
         }
 
         // POST: Customers/Delete/5
@@ -102,8 +141,10 @@ namespace MovieRental.Controllers
             try
             {
                 // TODO: Add delete logic here
+                _context.Customers.Remove(_context.Customers.Single(c => c.Id == id));
+                _context.SaveChanges();
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Customers");
             }
             catch
             {

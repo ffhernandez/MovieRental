@@ -1,0 +1,32 @@
+﻿@model MovieRental.Models.ViewModels.MovieFormViewModel
+@{
+    ViewData["Title"] = "Movie Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>New Movie</h2>
+
+@using (Html.BeginForm("Create", "Movies"))
+{
+<div class="col-sm-6">
+    <div class="form-group">
+        @Html.LabelFor(vm => vm.Movie.Name)
+        @Html.TextBoxFor(vm => vm.Movie.Name, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(vm => vm.Movie.ReleaseDate)
+        @Html.TextBoxFor(vm => vm.Movie.ReleaseDate, "{0:d MMM yyyy}", new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(vm => vm.Movie.GenreId)
+        @Html.DropDownListFor(vm => vm.Movie.GenreId, new SelectList(Model.Genres, "Id", "Name"), new { @class = "form-control", style = "width: auto" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(vm => vm.Movie.Stock)
+        @Html.TextBoxFor(vm => vm.Movie.Stock, new { @class = "form-control" })
+    </div>
+
+    @Html.HiddenFor(vm => vm.Movie.Id)
+    <button type="submit" class="btn btn-primary">Save</button>
+</div>
+}
